@@ -15,9 +15,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <sys/sockets.h>
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
 #include <errno.h>
+#include <poll.h>

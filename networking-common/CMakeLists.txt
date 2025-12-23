@@ -3,10 +3,9 @@
 add_library(NetworkingCommon)
 
 target_sources(NetworkingCommon
-    PRIVATE
-        ./src/NetworkingCommon.cpp
+    PRIVATE ./src/NetworkingCommon.cpp
     PUBLIC
-        FILE_SET NetworkingCommonHeaders
+        FILE_SET networkingCommonHeaders
         TYPE HEADERS
         BASE_DIRS
             ./include
@@ -14,6 +13,6 @@ target_sources(NetworkingCommon
             ./include/NetworkingCommon.hpp
 )
 
-target_precompiled_headers(
+target_precompile_headers(
     NetworkingCommon PRIVATE ./include/NetworkingCommonPch.hpp
 )
