@@ -1,5 +1,3 @@
-
-
 add_library(NetworkingCommon)
 
 target_sources(NetworkingCommon
