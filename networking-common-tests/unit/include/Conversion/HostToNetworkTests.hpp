@@ -8,7 +8,7 @@ UTEST(Conversion_HostToNetF32, WhenConvertingToBigEndianOrNetworkFloat_ThenItsBy
     static_assert(std::numeric_limits<float>::is_iec559); // IEEE-754
     float f = -123.456f;
     // Act
-    uint32_t net = Bender::Conversion::HostToNetF32(f);
+    uint32_t net = Bender::Conversion::HostToNet(f);
     // Assert
     std::array<uint8_t, 4> expectedBigEndianBytes = {0xC2, 0xF6, 0xE9, 0x79};
     std::array<uint8_t, 4> bytes{};
@@ -24,7 +24,7 @@ UTEST(Conversion_HostToNetF64, WhenConvertingToBigEndianOrNetworkDouble_ThenItsB
     static_assert(std::numeric_limits<double>::is_iec559); // IEEE-754
     double d = -12345.67890;
     // Act
-    uint64_t net = Bender::Conversion::HostToNetF64(d);
+    uint64_t net = Bender::Conversion::HostToNet(d);
     // Assert
     std::array<uint8_t, 8> expectedBigEndianBytes = {0xC0, 0xC8, 0x1C, 0xD6, 0xE6, 0x31, 0xF8, 0xA1};
     std::array<uint8_t, 8> bytes{};

@@ -1,7 +1,2 @@
 #pragma once
-
-namespace Bender {
-
-    void HelloWorld();
-    int Add(int x, int y);
-}
+#include "Addresses/IPAddress.hpp"

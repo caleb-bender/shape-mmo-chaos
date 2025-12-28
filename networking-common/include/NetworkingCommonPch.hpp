@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <cstring>
+#include <cstdint>
 #include <limits>
 #include <bit>
 

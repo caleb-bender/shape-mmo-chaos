@@ -3,13 +3,15 @@
 
 namespace Bender::Conversion {
 
-    uint32_t HostToNetF32(float f) {
+    uint32_t HostToNet(float f) {
+        static_assert(sizeof(float) == 4);
         uint32_t u;
         std::memcpy(&u, &f, sizeof(float));
         return htonl(u);
     }
-
-    uint64_t HostToNetF64(double d) {
+    
+    uint64_t HostToNet(double d) {
+        static_assert(sizeof(double) == 8);
         uint64_t u;
         std::memcpy(&u, &d, sizeof(double));
         static_assert(std::endian::native == std::endian::little || std::endian::native == std::endian::big, "Unknown endianness");

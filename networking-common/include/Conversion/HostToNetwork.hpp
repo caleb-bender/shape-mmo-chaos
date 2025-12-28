@@ -3,7 +3,7 @@
 namespace Bender::Conversion {
 
     // Assumes f is an IEEE 754 float
-    uint32_t HostToNetF32(float f);
+    uint32_t HostToNet(float f);
     // Assumes d is an IEEE 754 double
-    uint64_t HostToNetF64(double d);
+    uint64_t HostToNet(double d);
 }
