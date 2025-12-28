@@ -19,6 +19,7 @@ target_sources(NetworkingCommonUnitTests
         FILES
             ../../networking-common/include/NetworkingCommon.hpp
             ./include/NetworkingCommonUnitTestsPch.hpp
+            ./include/Conversion/HostToNetworkTests.hpp
 )
 
 target_precompile_headers(

@@ -14,6 +14,9 @@
 #include <chrono>
 #include <unordered_map>
 #include <unordered_set>
+#include <cstring>
+#include <limits>
+#include <bit>
 
 #include <sys/socket.h>
 #include <sys/types.h>
