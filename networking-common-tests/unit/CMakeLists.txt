@@ -20,6 +20,7 @@ target_sources(NetworkingCommonUnitTests
             ../../networking-common/include/NetworkingCommon.hpp
             ./include/NetworkingCommonUnitTestsPch.hpp
             ./include/Conversion/HostToNetworkTests.hpp
+            ./include/Addresses/IPAddressTests.hpp
 )
 
 target_precompile_headers(

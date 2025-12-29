@@ -11,6 +11,7 @@ namespace Bender::Addresses {
         new (_ipDataBuffer) IPData;
         IPData* data = reinterpret_cast<IPData*>(_ipDataBuffer);
         int rc;
+        if (!ip) throw std::runtime_error("Failed to create IPAddress");
         if (type == IPAddress::Type::IPv4) {
             rc = inet_pton(AF_INET, ip, data->addr);
         }
