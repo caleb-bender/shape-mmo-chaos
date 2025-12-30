@@ -3,11 +3,11 @@
 #include "Addresses/IPAddress.hpp"
 
 UTEST(IPAddressTests, WhenCreatingValidIPv4AddressNoExceptionIsThrown) {
-    // Act & Assert
-    Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4);
+    // Act
+    auto ipAddress = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4).value();
 }
 
-UTEST(IPAddressTests, WhenCreatingIPv4AddressWithInvalidData_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
+UTEST(IPAddressTests, WhenCreatingIPv4AddressWithInvalidData_ThenUnexpectedReturnsWithCorrectMessage) {
     // Act
     auto expected = Bender::Addresses::IPAddress::create("192.168.1.245.1", Bender::Addresses::IPAddress::Type::IPv4);
     // Assert
@@ -15,7 +15,7 @@ UTEST(IPAddressTests, WhenCreatingIPv4AddressWithInvalidData_ThenInvalidArgument
     ASSERT_STREQ("\"192.168.1.245.1\" is not a valid IPv4 address", expected.error().c_str());
 }
 
-UTEST(IPAddressTests, WhenCreatingIPv6AddressWithInvalidData_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
+UTEST(IPAddressTests, WhenCreatingIPv6AddressWithInvalidData_ThenUnexpectedReturnsWithCorrectMessage) {
     // Act
     auto expected = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv6);
     // Assert
@@ -23,7 +23,7 @@ UTEST(IPAddressTests, WhenCreatingIPv6AddressWithInvalidData_ThenInvalidArgument
     ASSERT_STREQ("\"192.168.1.245\" is not a valid IPv6 address", expected.error().c_str());
 }
 
-UTEST(IPAddressTests, WhenCreatingIPAddressWithInvalidTypeAny_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
+UTEST(IPAddressTests, WhenCreatingIPAddressWithInvalidTypeAny_ThenUnexpectedReturnsWithCorrectMessage) {
     // Act
     auto expected = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::Any);
     // Assert
@@ -31,7 +31,7 @@ UTEST(IPAddressTests, WhenCreatingIPAddressWithInvalidTypeAny_ThenInvalidArgumen
     ASSERT_STREQ("type must be IPAddress::Type::IPv4 or IPAddress::Type::IPv6", expected.error().c_str());
 }
 
-UTEST(IPAddressTests, WhenCreatingIPAddressWithNullConstCharPointer_ThenInvalidRuntimeErrorIsThrownWithCorrectMessage) {
+UTEST(IPAddressTests, WhenCreatingIPAddressWithNullConstCharPointer_ThenUnexpectedReturnsWithCorrectMessage) {
     // Act
     auto expected = Bender::Addresses::IPAddress::create(nullptr, Bender::Addresses::IPAddress::Type::IPv4);
     // Assert
