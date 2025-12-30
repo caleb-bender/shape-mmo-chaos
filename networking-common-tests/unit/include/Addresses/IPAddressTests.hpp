@@ -4,49 +4,45 @@
 
 UTEST(IPAddressTests, WhenCreatingValidIPv4AddressNoExceptionIsThrown) {
     // Act & Assert
-    Bender::Addresses::IPAddress ipAddress("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4);
+    Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4);
 }
 
 UTEST(IPAddressTests, WhenCreatingIPv4AddressWithInvalidData_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
-    // Act & Assert
-    EXPECT_EXCEPTION_WITH_MESSAGE(
-        Bender::Addresses::IPAddress("192.168.1.245.1", Bender::Addresses::IPAddress::Type::IPv4),
-        std::invalid_argument,
-        "\"192.168.1.245.1\" is not a valid IPv4 address"
-    );
+    // Act
+    auto expected = Bender::Addresses::IPAddress::create("192.168.1.245.1", Bender::Addresses::IPAddress::Type::IPv4);
+    // Assert
+    ASSERT_FALSE(expected.has_value());
+    ASSERT_STREQ("\"192.168.1.245.1\" is not a valid IPv4 address", expected.error().c_str());
 }
 
 UTEST(IPAddressTests, WhenCreatingIPv6AddressWithInvalidData_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
-    // Act & Assert
-    EXPECT_EXCEPTION_WITH_MESSAGE(
-        Bender::Addresses::IPAddress("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv6),
-        std::invalid_argument,
-        "\"192.168.1.245\" is not a valid IPv6 address"
-    );
+    // Act
+    auto expected = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv6);
+    // Assert
+    ASSERT_FALSE(expected.has_value());
+    ASSERT_STREQ("\"192.168.1.245\" is not a valid IPv6 address", expected.error().c_str());
 }
 
 UTEST(IPAddressTests, WhenCreatingIPAddressWithInvalidTypeAny_ThenInvalidArgumentExceptionIsThrownWithCorrectMessage) {
-    // Act & Assert
-    EXPECT_EXCEPTION_WITH_MESSAGE(
-        Bender::Addresses::IPAddress("192.168.1.245", Bender::Addresses::IPAddress::Type::Any),
-        std::invalid_argument,
-        "type must be IPAddress::Type::IPv4 or IPAddress::Type::IPv6"
-    );
+    // Act
+    auto expected = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::Any);
+    // Assert
+    ASSERT_FALSE(expected.has_value());
+    ASSERT_STREQ("type must be IPAddress::Type::IPv4 or IPAddress::Type::IPv6", expected.error().c_str());
 }
 
 UTEST(IPAddressTests, WhenCreatingIPAddressWithNullConstCharPointer_ThenInvalidRuntimeErrorIsThrownWithCorrectMessage) {
-    // Act & Assert
-    EXPECT_EXCEPTION_WITH_MESSAGE(
-        Bender::Addresses::IPAddress(nullptr, Bender::Addresses::IPAddress::Type::IPv4),
-        std::runtime_error,
-        "Failed to create IPAddress"
-    );
+    // Act
+    auto expected = Bender::Addresses::IPAddress::create(nullptr, Bender::Addresses::IPAddress::Type::IPv4);
+    // Assert
+    ASSERT_FALSE(expected.has_value());
+    ASSERT_STREQ("Failed to create IPAddress", expected.error().c_str());
 }
 
 UTEST(IPAddressTests, WhenWritingIPv4AddressToOstream_ThenItContainsCorrectStringData) {
     // Arrange
     std::ostringstream stream;
-    Bender::Addresses::IPAddress ipAddress("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4);
+    auto ipAddress = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4).value();
     // Act
     stream << ipAddress;
     // Assert
@@ -57,7 +53,7 @@ UTEST(IPAddressTests, WhenWritingIPv4AddressToOstream_ThenItContainsCorrectStrin
 UTEST(IPAddressTests, WhenWritingIPv6AddressToOstream_ThenItContainsCorrectStringData) {
     // Arrange
     std::ostringstream stream;
-    Bender::Addresses::IPAddress ipAddress("2601:204:c903:c630::b03d", Bender::Addresses::IPAddress::Type::IPv6);
+    auto ipAddress = Bender::Addresses::IPAddress::create("2601:204:c903:c630::b03d", Bender::Addresses::IPAddress::Type::IPv6).value();
     // Act
     stream << ipAddress;
     // Assert
@@ -68,7 +64,7 @@ UTEST(IPAddressTests, WhenWritingIPv6AddressToOstream_ThenItContainsCorrectStrin
 // test that type() method returns correct type
 UTEST(IPAddressTests, WhenCreatingIPv4Address_ThenTypeMethodReturnsIPv4) {
     // Arrange
-    Bender::Addresses::IPAddress ipAddress("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4);
+    auto ipAddress = Bender::Addresses::IPAddress::create("192.168.1.245", Bender::Addresses::IPAddress::Type::IPv4).value();
     auto expectedType = Bender::Addresses::IPAddress::Type::IPv4;
     // Act
     auto actualType = ipAddress.type();
@@ -78,7 +74,7 @@ UTEST(IPAddressTests, WhenCreatingIPv4Address_ThenTypeMethodReturnsIPv4) {
 
 UTEST(IPAddressTests, WhenCreatingIPv6Address_ThenTypeMethodReturnsIPv6) {
     // Arrange
-    Bender::Addresses::IPAddress ipAddress("2601:204:c903:c630::b03d", Bender::Addresses::IPAddress::Type::IPv6);
+    auto ipAddress = Bender::Addresses::IPAddress::create("2601:204:c903:c630::b03d", Bender::Addresses::IPAddress::Type::IPv6).value();
     auto expectedType = Bender::Addresses::IPAddress::Type::IPv6;
     // Act
     auto actualType = ipAddress.type();
@@ -89,7 +85,7 @@ UTEST(IPAddressTests, WhenCreatingIPv6Address_ThenTypeMethodReturnsIPv6) {
 UTEST(IPAddressTests, WhenUsingIPv4UserDefinedLiteral_ThenCreatesCorrectIPAddress) {
     // Arrange
     using namespace Bender::Addresses;
-    Bender::Addresses::IPAddress ipAddress = "192.168.1.245"_ipv4;
+    auto ipAddress = "192.168.1.245"_ipv4;
     auto expectedType = Bender::Addresses::IPAddress::Type::IPv4;
     // Act
     auto actualType = ipAddress.type();
@@ -100,7 +96,7 @@ UTEST(IPAddressTests, WhenUsingIPv4UserDefinedLiteral_ThenCreatesCorrectIPAddres
 UTEST(IPAddressTests, WhenUsingIPv6UserDefinedLiteral_ThenCreatesCorrectIPAddress) {
     // Arrange
     using namespace Bender::Addresses;
-    Bender::Addresses::IPAddress ipAddress = "2601:204:c903:c630::b03d"_ipv6;
+    auto ipAddress = "2601:204:c903:c630::b03d"_ipv6;
     auto expectedType = Bender::Addresses::IPAddress::Type::IPv6;
     // Act
     auto actualType = ipAddress.type();

@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <limits>
 #include <bit>
+#include <expected>
 
 #include <sys/socket.h>
 #include <sys/types.h>

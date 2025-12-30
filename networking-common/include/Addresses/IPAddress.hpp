@@ -1,6 +1,9 @@
 #pragma once
 #include <ostream>
 #include <cstdint>
+#include <string>
+#include <expected>
+#include <array>
 
 namespace Bender::Addresses {
 
@@ -13,12 +16,13 @@ namespace Bender::Addresses {
             Any
         };
 
-        IPAddress(const char* ip, Type type);
+        static std::expected<IPAddress, std::string> create(const char* ip, Type type);
         ~IPAddress();
         friend std::ostream& operator<<(std::ostream& os, const IPAddress& obj);
         constexpr Type type() const { return _type; }
     private:
-        alignas(16) std::uint8_t _ipDataBuffer[16] = {0};
+        IPAddress(std::array<std::uint8_t, 16> ipDataBuffer, Type type);
+        alignas(16) std::array<std::uint8_t, 16> _ipDataBuffer = {0};
         Type _type;
     };
 
