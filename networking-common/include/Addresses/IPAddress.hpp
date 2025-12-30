@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 #include <cstdint>
 
 namespace Bender::Addresses {
@@ -14,12 +15,13 @@ namespace Bender::Addresses {
 
         IPAddress(const char* ip, Type type);
         ~IPAddress();
+        friend std::ostream& operator<<(std::ostream& os, const IPAddress& obj);
+        constexpr Type type() const { return _type; }
     private:
         alignas(16) std::uint8_t _ipDataBuffer[16] = {0};
+        Type _type;
     };
 
-    // IPAddress operator"" _ipv4(const char* ip);
-    // IPAddress operator"" _ipv6(const char* ip);
-
-
+    IPAddress operator"" _ipv4(const char* ip, std::size_t len);
+    IPAddress operator"" _ipv6(const char* ip, std::size_t len);
 }

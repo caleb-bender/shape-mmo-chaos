@@ -7,7 +7,7 @@ namespace Bender::Addresses {
         std::uint8_t addr[sizeof(struct in6_addr)];
     };
 
-    IPAddress::IPAddress(const char* ip, IPAddress::Type type) {
+    IPAddress::IPAddress(const char* ip, IPAddress::Type type) : _type(type) {
         new (_ipDataBuffer) IPData;
         IPData* data = reinterpret_cast<IPData*>(_ipDataBuffer);
         int rc;
@@ -34,5 +34,26 @@ namespace Bender::Addresses {
     IPAddress::~IPAddress() {
         IPData* data = reinterpret_cast<IPData*>(_ipDataBuffer);
         data->~IPData();
+    }
+
+    std::ostream& operator<<(std::ostream& os, const IPAddress& obj) {
+        char ipAddressString[INET6_ADDRSTRLEN];
+        const IPData* data = reinterpret_cast<const IPData*>(obj._ipDataBuffer);
+        if (obj._type == IPAddress::Type::IPv4) {
+            inet_ntop(AF_INET, data->addr, ipAddressString, INET_ADDRSTRLEN);
+        }
+        else {
+            inet_ntop(AF_INET6, data->addr, ipAddressString, INET6_ADDRSTRLEN);
+        }
+        os << ((obj._type == IPAddress::Type::IPv4) ? "IPv4: " : "IPv6: ") << ipAddressString;
+        return os;
+    }
+
+    IPAddress operator"" _ipv4(const char* ip, std::size_t len) {
+        return IPAddress(ip, IPAddress::Type::IPv4);
+    }
+
+    IPAddress operator"" _ipv6(const char* ip, std::size_t len) {
+        return IPAddress(ip, IPAddress::Type::IPv6);
     }
 }
